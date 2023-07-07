@@ -27,9 +27,11 @@
 .main.data-v-92bb8f34 {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 750rpx;
 }
 .a.data-v-92bb8f34 {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }

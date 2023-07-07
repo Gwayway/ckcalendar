@@ -54,10 +54,11 @@ export default {
 .main {
 	display: flex;
 	flex-direction: column;
-	//align-items: center;
+	align-items: center;
 	width: 750rpx;
 }
 .a {
+	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	.b {
