@@ -29,13 +29,7 @@ export default {
 		};
 	},
 	onLoad() {
-		// uni.request({
-		// 	url: 'https://ckcalendar.952698119.workers.dev/',
-		// 	success: res => {
-		// 		this.events = res.data.list;
-		// 	}
-		// });
-		this.events = [1, 23, 6, 27];
+		this.getData();
 	},
 	methods: {
 		navTo(item) {
@@ -45,6 +39,20 @@ export default {
 		},
 		nextM(i) {
 			this.currentM = this.currentM.add(i, 'month');
+			this.getData();
+		},
+		getData() {
+			this.events = [];
+			uni.request({
+				url: 'https://mycalendarserver.bestwill.workers.dev/all',
+				method: 'POST',
+				data: { date: this.currentM.format('YYYY-MM') },
+				success: res => {
+					this.events = res.data.map(item => {
+						return parseInt(item.date.split('-')[2]);
+					});
+				}
+			});
 		}
 	}
 };

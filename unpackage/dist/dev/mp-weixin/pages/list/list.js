@@ -233,6 +233,7 @@ var _default = {
       this.$refs.popup.open();
     },
     submit: function submit() {
+      var _this3 = this;
       uni.request({
         url: 'https://mycalendarserver.bestwill.workers.dev/add',
         method: 'POST',
@@ -240,11 +241,10 @@ var _default = {
           date: this.date
         }, this.addObj),
         success: function success(res) {
-          console.log(res);
+          _this3.eventList.push(_objectSpread({}, _this3.addObj));
+          _this3.$refs.popup.close();
         }
       });
-      this.eventList.push(_objectSpread({}, this.addObj));
-      this.$refs.popup.close();
     }
   }
 };

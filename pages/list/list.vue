@@ -37,7 +37,7 @@ export default {
 		uni.request({
 			url: 'https://mycalendarserver.bestwill.workers.dev/get',
 			method: 'POST',
-			data: { date: this.date},
+			data: { date: this.date },
 			success: res => {
 				this.eventList = res.data;
 			}
@@ -59,11 +59,10 @@ export default {
 				method: 'POST',
 				data: { date: this.date, ...this.addObj },
 				success: res => {
-					console.log(res);
+					this.eventList.push({ ...this.addObj });
+					this.$refs.popup.close();
 				}
 			});
-			this.eventList.push({ ...this.addObj });
-			this.$refs.popup.close();
 		}
 	}
 };
