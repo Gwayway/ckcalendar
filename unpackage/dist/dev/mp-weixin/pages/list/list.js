@@ -101,13 +101,13 @@ var components
 try {
   components = {
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 70))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 66))
     },
     uniPopup: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 79))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 74))
     },
     uniEasyinput: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput */ "uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue */ 86))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput */ "uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue */ 81))
     },
   }
 } catch (e) {
@@ -164,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
@@ -199,47 +199,57 @@ var _default = {
   data: function data() {
     return {
       date: '',
-      eventList: [{
-        title: '第一个',
-        show: false,
-        detail: '爱国覅ask i规划洛克菲勒'
-      }, {
-        title: '第二个',
-        show: false,
-        detail: '韩国发i啊是个体覅'
-      }, {
-        title: '第三个',
-        show: false,
-        detail: '阿红覅哈多方了解'
-      }],
+      eventList: [],
       addObj: {
         title: '',
         show: '',
-        detail: ''
+        message: ''
       }
     };
   },
   onLoad: function onLoad(e) {
+    var _this = this;
     this.date = e.date;
+    uni.request({
+      url: 'https://mycalendarserver.bestwill.workers.dev/get',
+      method: 'POST',
+      data: {
+        date: this.date
+      },
+      success: function success(res) {
+        _this.eventList = res.data;
+      }
+    });
   },
   methods: {
     dshow: function dshow(item) {
       item.show = !item.show;
     },
     add: function add() {
-      var _this = this;
+      var _this2 = this;
       Object.keys(this.addObj).forEach(function (key) {
-        _this.addObj[key] = '';
+        _this2.addObj[key] = '';
       });
       this.$refs.popup.open();
     },
     submit: function submit() {
+      uni.request({
+        url: 'https://mycalendarserver.bestwill.workers.dev/add',
+        method: 'POST',
+        data: _objectSpread({
+          date: this.date
+        }, this.addObj),
+        success: function success(res) {
+          console.log(res);
+        }
+      });
       this.eventList.push(_objectSpread({}, this.addObj));
       this.$refs.popup.close();
     }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

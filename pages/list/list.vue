@@ -6,13 +6,13 @@
 			<div class="list-item" v-for="(e, i) in eventList" :key="i">
 				<div>{{ e.title }}</div>
 				<uni-icons type="bottom" @click="dshow(e)"></uni-icons>
-				<div v-if="e.show">{{ e.detail }}</div>
+				<div>{{ e.message }}</div>
 			</div>
 		</div>
 		<uni-popup ref="popup" type="center">
 			<div>
 				<uni-easyinput v-model="addObj.title" />
-				<uni-easyinput v-model="addObj.detail" type="textarea" />
+				<uni-easyinput v-model="addObj.message" type="textarea" />
 				<button @click="submit">确认</button>
 			</div>
 		</uni-popup>
@@ -24,32 +24,24 @@ export default {
 	data() {
 		return {
 			date: '',
-			eventList: [
-				{
-					title: '第一个',
-					show: false,
-					detail: '爱国覅ask i规划洛克菲勒'
-				},
-				{
-					title: '第二个',
-					show: false,
-					detail: '韩国发i啊是个体覅'
-				},
-				{
-					title: '第三个',
-					show: false,
-					detail: '阿红覅哈多方了解'
-				}
-			],
+			eventList: [],
 			addObj: {
 				title: '',
 				show: '',
-				detail: ''
+				message: ''
 			}
 		};
 	},
 	onLoad(e) {
 		this.date = e.date;
+		uni.request({
+			url: 'https://mycalendarserver.bestwill.workers.dev/get',
+			method: 'POST',
+			data: { date: this.date},
+			success: res => {
+				this.eventList = res.data;
+			}
+		});
 	},
 	methods: {
 		dshow(item) {
@@ -62,6 +54,14 @@ export default {
 			this.$refs.popup.open();
 		},
 		submit() {
+			uni.request({
+				url: 'https://mycalendarserver.bestwill.workers.dev/add',
+				method: 'POST',
+				data: { date: this.date, ...this.addObj },
+				success: res => {
+					console.log(res);
+				}
+			});
 			this.eventList.push({ ...this.addObj });
 			this.$refs.popup.close();
 		}
