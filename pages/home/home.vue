@@ -28,13 +28,13 @@ export default {
 			currentM: dayjs()
 		};
 	},
-	onLoad() {
+	onShow() {
 		this.getData();
 	},
 	methods: {
 		navTo(item) {
 			uni.navigateTo({
-				url: `/pages/list/list?date=${dayjs(this.currentM).format('YYYY-MM-' + item)}`
+				url: `/pages/list/list?date=${dayjs(this.currentM).format('YYYY-MM-' + item)}&has=${this.events.includes(item)}`
 			});
 		},
 		nextM(i) {

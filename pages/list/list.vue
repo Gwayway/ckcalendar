@@ -4,12 +4,18 @@
 		<uni-icons type="folder-add-filled" size="30" @click="add"></uni-icons>
 		<div class="list-main">
 			<div class="list-item" v-for="(e, i) in eventList" :key="i">
-				<div>{{ e.title }}</div>
+				<div class="tt-ac">
+					<div :class="['tt', e.isdeal == 1 ? 'deal' : '']">{{ e.title }}</div>
+					<div class="ac">
+						<div v-if="!e.isdeal" class="sc" @click="deal(e)">完成</div>
+						<div class="de" @click="delet(e)">删除</div>
+					</div>
+				</div>
 				<uni-icons type="bottom" @click="dshow(e)"></uni-icons>
-				<div>{{ e.message }}</div>
+				<div v-if="e.show">{{ e.message }}</div>
 			</div>
 		</div>
-		<uni-popup ref="popup" type="center">
+		<uni-popup ref="popup" type="top">
 			<div>
 				<uni-easyinput v-model="addObj.title" />
 				<uni-easyinput v-model="addObj.message" type="textarea" />
@@ -34,17 +40,15 @@ export default {
 	},
 	onLoad(e) {
 		this.date = e.date;
-		uni.request({
-			url: 'https://mycalendarserver.bestwill.workers.dev/get',
-			method: 'POST',
-			data: { date: this.date },
-			success: res => {
-				this.eventList = res.data;
-			}
-		});
+		if (e.has == 'true') {
+			this.get();
+		}
 	},
 	methods: {
 		dshow(item) {
+			if (!item.hasOwnProperty('show')) {
+				this.$set(item, 'show', false);
+			}
 			item.show = !item.show;
 		},
 		add() {
@@ -59,8 +63,38 @@ export default {
 				method: 'POST',
 				data: { date: this.date, ...this.addObj },
 				success: res => {
-					this.eventList.push({ ...this.addObj });
+					this.get();
 					this.$refs.popup.close();
+				}
+			});
+		},
+		deal(item) {
+			uni.request({
+				url: 'https://mycalendarserver.bestwill.workers.dev/deal',
+				method: 'POST',
+				data: { id: item.id },
+				success: res => {
+					this.get();
+				}
+			});
+		},
+		delet(item) {
+			uni.request({
+				url: 'https://mycalendarserver.bestwill.workers.dev/delet',
+				method: 'POST',
+				data: { id: item.id },
+				success: res => {
+					this.get();
+				}
+			});
+		},
+		get() {
+			uni.request({
+				url: 'https://mycalendarserver.bestwill.workers.dev/get',
+				method: 'POST',
+				data: { date: this.date },
+				success: res => {
+					this.eventList = res.data;
 				}
 			});
 		}
@@ -69,6 +103,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.deal {
+	text-decoration: line-through double red;
+}
 .list-main {
 	display: flex;
 	flex-direction: column;
@@ -77,6 +114,27 @@ export default {
 		background-color: #eeeeee;
 		min-height: 80rpx;
 		margin-bottom: 12rpx;
+		.tt-ac {
+			display: flex;
+			justify-content: space-between;
+			.tt {
+			}
+
+			.ac {
+				font-size: 24rpx;
+				display: flex;
+				> div {
+					padding: 10rpx;
+					margin: 10rpx;
+				}
+				.sc {
+					background-color: greenyellow;
+				}
+				.de {
+					background-color: rosybrown;
+				}
+			}
+		}
 	}
 }
 </style>

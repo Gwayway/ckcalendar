@@ -24,6 +24,10 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+.deal.data-v-7d5e07c6 {
+  -webkit-text-decoration: line-through double red;
+          text-decoration: line-through double red;
+}
 .list-main.data-v-7d5e07c6 {
   display: flex;
   flex-direction: column;
@@ -33,5 +37,23 @@
   background-color: #eeeeee;
   min-height: 80rpx;
   margin-bottom: 12rpx;
+}
+.list-main .list-item .tt-ac.data-v-7d5e07c6 {
+  display: flex;
+  justify-content: space-between;
+}
+.list-main .list-item .tt-ac .ac.data-v-7d5e07c6 {
+  font-size: 24rpx;
+  display: flex;
+}
+.list-main .list-item .tt-ac .ac > ._div.data-v-7d5e07c6 {
+  padding: 10rpx;
+  margin: 10rpx;
+}
+.list-main .list-item .tt-ac .ac .sc.data-v-7d5e07c6 {
+  background-color: greenyellow;
+}
+.list-main .list-item .tt-ac .ac .de.data-v-7d5e07c6 {
+  background-color: rosybrown;
 }
 

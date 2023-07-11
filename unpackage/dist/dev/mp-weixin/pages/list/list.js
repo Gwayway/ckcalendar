@@ -195,6 +195,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -208,32 +214,27 @@ var _default = {
     };
   },
   onLoad: function onLoad(e) {
-    var _this = this;
     this.date = e.date;
-    uni.request({
-      url: 'https://mycalendarserver.bestwill.workers.dev/get',
-      method: 'POST',
-      data: {
-        date: this.date
-      },
-      success: function success(res) {
-        _this.eventList = res.data;
-      }
-    });
+    if (e.has == 'true') {
+      this.get();
+    }
   },
   methods: {
     dshow: function dshow(item) {
+      if (!item.hasOwnProperty('show')) {
+        this.$set(item, 'show', false);
+      }
       item.show = !item.show;
     },
     add: function add() {
-      var _this2 = this;
+      var _this = this;
       Object.keys(this.addObj).forEach(function (key) {
-        _this2.addObj[key] = '';
+        _this.addObj[key] = '';
       });
       this.$refs.popup.open();
     },
     submit: function submit() {
-      var _this3 = this;
+      var _this2 = this;
       uni.request({
         url: 'https://mycalendarserver.bestwill.workers.dev/add',
         method: 'POST',
@@ -241,8 +242,47 @@ var _default = {
           date: this.date
         }, this.addObj),
         success: function success(res) {
-          _this3.eventList.push(_objectSpread({}, _this3.addObj));
-          _this3.$refs.popup.close();
+          _this2.get();
+          _this2.$refs.popup.close();
+        }
+      });
+    },
+    deal: function deal(item) {
+      var _this3 = this;
+      uni.request({
+        url: 'https://mycalendarserver.bestwill.workers.dev/deal',
+        method: 'POST',
+        data: {
+          id: item.id
+        },
+        success: function success(res) {
+          _this3.get();
+        }
+      });
+    },
+    delet: function delet(item) {
+      var _this4 = this;
+      uni.request({
+        url: 'https://mycalendarserver.bestwill.workers.dev/delet',
+        method: 'POST',
+        data: {
+          id: item.id
+        },
+        success: function success(res) {
+          _this4.get();
+        }
+      });
+    },
+    get: function get() {
+      var _this5 = this;
+      uni.request({
+        url: 'https://mycalendarserver.bestwill.workers.dev/get',
+        method: 'POST',
+        data: {
+          date: this.date
+        },
+        success: function success(res) {
+          _this5.eventList = res.data;
         }
       });
     }

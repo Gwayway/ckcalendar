@@ -227,13 +227,13 @@ var _default = {
       currentM: (0, _dayjs.default)()
     };
   },
-  onLoad: function onLoad() {
+  onShow: function onShow() {
     this.getData();
   },
   methods: {
     navTo: function navTo(item) {
       uni.navigateTo({
-        url: "/pages/list/list?date=".concat((0, _dayjs.default)(this.currentM).format('YYYY-MM-' + item))
+        url: "/pages/list/list?date=".concat((0, _dayjs.default)(this.currentM).format('YYYY-MM-' + item), "&has=").concat(this.events.includes(item))
       });
     },
     nextM: function nextM(i) {
